@@ -14,8 +14,8 @@ use App\Http\Controllers\FrontendController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 // Route::get('/', array('as' => 'index', 'uses' => 'UserController@index'));
-Route::get('/', [FrontendController::class, 'signUp']);
+// Route::get('/', [FrontendController::class, 'signUp']);

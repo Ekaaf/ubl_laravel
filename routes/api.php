@@ -19,8 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('postlogin', [FrontendController::class, 'postlogin']);
 Route::post('signUp', [FrontendController::class, 'signUp']);
+Route::post('regDentalCamp', [FrontendController::class, 'regDentalCamp']);
+Route::post('saveContactUs', [FrontendController::class, 'saveContactUs']);
 
 Route::middleware('auth:api')->group( function () {
+	Route::post('updateDoctor', [FrontendController::class, 'updateDoctor']);
+
+	
 	Route::get('/test', array('as' => 'test', 'uses' => 'FrontendController@test'));
 	Route::post('/item', array('as' => 'getmainimage', 'uses' => 'FrontendController@getMainImage'));
 });
