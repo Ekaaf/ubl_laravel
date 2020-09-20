@@ -23,9 +23,13 @@ Route::post('regDentalCamp', [FrontendController::class, 'regDentalCamp']);
 Route::post('saveContactUs', [FrontendController::class, 'saveContactUs']);
 
 Route::middleware('auth:api')->group( function () {
+	Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);
+	Route::get('getUserInfo', [FrontendController::class, 'getUserInfo']);
 	Route::post('updateDoctor', [FrontendController::class, 'updateDoctor']);
+	Route::post('updateUser', [FrontendController::class, 'updateUser']);
+	Route::post('updatePassword', [FrontendController::class, 'updatePassword']);
 
-	
+
 	Route::get('/test', array('as' => 'test', 'uses' => 'FrontendController@test'));
 	Route::post('/item', array('as' => 'getmainimage', 'uses' => 'FrontendController@getMainImage'));
 });
