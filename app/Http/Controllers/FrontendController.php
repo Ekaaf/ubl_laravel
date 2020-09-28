@@ -86,7 +86,7 @@ class FrontendController extends Controller
 
     public function getDoctorInfo(Request $request){
         $doctor = DB::table('users')
-                    ->select('users.id as id', 'users.name as name','users.email as email', 'users.phone_number as phone_number', 'doctors.chamber_name', 'doctors.chamber_address')
+                    ->select('users.id as id', 'users.name as name','users.email as email', 'users.phone_number as phone_number', 'doctors.chamber_name', 'doctors.chamber_address','doctors.designation','doctors.organization','doctors.bmdc_number', 'doctors.specialization')
                     ->join('doctors','users.id','=','doctors.user_id')
                     ->where('users.id', $request->input('id'))
                     ->get();
@@ -103,7 +103,7 @@ class FrontendController extends Controller
         $user->save();
 
         $doctor = Doctor::where('user_id',$request->input('doctor_id'))
-                        ->update(['chamber_name' => $request->input('doctor_chamber_name'), 'chamber_address' => $request->input('doctor_chamber_address')]);
+                        ->update(['designation' => $request->input('doctor_designation'),'organization' => $request->input('doctor_institution'),'bmdc_number' => $request->input('bmdc_number'),'specialization' => $request->input('specialization'), 'chamber_name' => $request->input('doctor_chamber_name'), 'chamber_address' => $request->input('doctor_chamber_address')]);
 
         // dd($user);
         $response['success'] = true;
