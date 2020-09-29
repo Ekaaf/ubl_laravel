@@ -21,6 +21,7 @@ Route::post('postlogin', [FrontendController::class, 'postlogin']);
 Route::post('signUp', [FrontendController::class, 'signUp']);
 Route::post('regDentalCamp', [FrontendController::class, 'regDentalCamp']);
 Route::post('saveContactUs', [FrontendController::class, 'saveContactUs']);
+Route::post('findDoctor', [FrontendController::class, 'findDoctor']);
 
 Route::middleware('auth:api')->group( function () {
 	Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);

@@ -86,7 +86,7 @@ class FrontendController extends Controller
 
     public function getDoctorInfo(Request $request){
         $doctor = DB::table('users')
-                    ->select('users.id as id', 'users.name as name','users.email as email', 'users.phone_number as phone_number', 'doctors.chamber_name', 'doctors.chamber_address','doctors.designation','doctors.organization','doctors.bmdc_number', 'doctors.specialization')
+                    // ->select('users.id as id', 'users.name as name','users.email as email', 'users.phone_number as phone_number', 'doctors.chamber_name', 'doctors.chamber_address','doctors.designation','doctors.organization','doctors.bmdc_number', 'doctors.specialization')
                     ->join('doctors','users.id','=','doctors.user_id')
                     ->where('users.id', $request->input('id'))
                     ->get();
@@ -101,7 +101,14 @@ class FrontendController extends Controller
         $user->phone_number = $request->input('doctor_phone');
         $user->email = $request->input('doctor_email');
         $user->save();
-
+        $imageUrl = "";
+        if($request->file()){
+            $file = $request->file('image');
+            $file->move('public/images/doctor/',$file->getClientOriginalName());
+            $imageUrl = "public/images/doctor/".$file->getClientOriginalName();
+            Doctor::where('user_id',$request->input('doctor_id'))
+                        ->update(['imagelink' => $imageUrl]);
+        }
         $doctor = Doctor::where('user_id',$request->input('doctor_id'))
                         ->update(['designation' => $request->input('doctor_designation'),'organization' => $request->input('doctor_institution'),'bmdc_number' => $request->input('bmdc_number'),'specialization' => $request->input('specialization'), 'chamber_name' => $request->input('doctor_chamber_name'), 'chamber_address' => $request->input('doctor_chamber_address')]);
 
@@ -149,5 +156,32 @@ class FrontendController extends Controller
 
         }
         return response()->json($response);
+    }
+
+
+    public function findDoctor(Request $request){
+        // dd($request->input());
+
+        $query = DB::table('users')
+                ->join('doctors','users.id','=','doctors.user_id');
+
+        if(!is_null($request->input('location'))){
+
+        }
+        if(!is_null($request->input('name'))){
+            $query->where('users.name', 'like', '%' . $request->input('name') . '%');
+        }
+        if(!is_null($request->input('chamber_name'))){
+            $query->where('doctors.chamber_name', 'like', '%' . $request->input('chamber_name') . '%');
+        }
+        if(!is_null($request->input('specialization'))){
+            $query->where('doctors.specialization', 'like', '%' . $request->input('specialization') . '%');
+        }
+        if(!is_null($request->input('phone_number'))){
+            $query->where('users.phone_number', 'like', '%' . $request->input('phone_number') . '%');
+        }
+        $doctors = $query->get();
+        // dd($doctors);
+        return response()->json($doctors);
     }
 }	
