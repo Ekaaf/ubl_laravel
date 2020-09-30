@@ -35,9 +35,9 @@ class FrontendController extends Controller
         }
         else{
             $user = new User();
-            $user->name = $request->input('name');
+            $user->name = $request->input('signup_name');
             $user->email = $request->input('email');
-            $user->phone_number = $request->input('phone_number');
+            $user->phone_number = $request->input('signup_phone');
             $user->password = Hash::make($request->input('password'));
             $user->role_id = $request->input('role_id');
             $user->save();
@@ -166,7 +166,7 @@ class FrontendController extends Controller
                 ->join('doctors','users.id','=','doctors.user_id');
 
         if(!is_null($request->input('location'))){
-
+            $query->where('doctors.chamber_address', 'like', '%' . $request->input('location') . '%');
         }
         if(!is_null($request->input('name'))){
             $query->where('users.name', 'like', '%' . $request->input('name') . '%');
