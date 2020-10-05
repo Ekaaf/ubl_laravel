@@ -22,9 +22,10 @@ Route::post('signUp', [FrontendController::class, 'signUp']);
 Route::post('regDentalCamp', [FrontendController::class, 'regDentalCamp']);
 Route::post('saveContactUs', [FrontendController::class, 'saveContactUs']);
 Route::post('findDoctor', [FrontendController::class, 'findDoctor']);
+Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);
 
 Route::middleware('auth:api')->group( function () {
-	Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);
+	
 	Route::get('getUserInfo', [FrontendController::class, 'getUserInfo']);
 	Route::post('updateDoctor', [FrontendController::class, 'updateDoctor']);
 	Route::post('updateUser', [FrontendController::class, 'updateUser']);
