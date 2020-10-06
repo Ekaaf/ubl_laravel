@@ -25,7 +25,7 @@ Route::post('findDoctor', [FrontendController::class, 'findDoctor']);
 Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);
 
 Route::middleware('auth:api')->group( function () {
-	
+
 	Route::get('getUserInfo', [FrontendController::class, 'getUserInfo']);
 	Route::post('updateDoctor', [FrontendController::class, 'updateDoctor']);
 	Route::post('updateUser', [FrontendController::class, 'updateUser']);

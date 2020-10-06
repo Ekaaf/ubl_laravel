@@ -174,12 +174,12 @@ class FrontendController extends Controller
         if(!is_null($request->input('chamber_name'))){
             $query->where('doctors.chamber_name', 'like', '%' . $request->input('chamber_name') . '%');
         }
-        if(!is_null($request->input('specialization'))){
-            $query->where('doctors.specialization', 'like', '%' . $request->input('specialization') . '%');
+        if(!is_null($request->input('department'))){
+            $query->where('doctors.department', 'like', '%' . $request->input('department') . '%');
         }
-        if(!is_null($request->input('phone_number'))){
-            $query->where('users.phone_number', 'like', '%' . $request->input('phone_number') . '%');
-        }
+        // if(!is_null($request->input('phone_number'))){
+        //     $query->where('users.phone_number', 'like', '%' . $request->input('phone_number') . '%');
+        // }
         $doctors = $query->get();
         // dd($doctors);
         return response()->json($doctors);
