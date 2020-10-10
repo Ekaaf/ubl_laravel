@@ -23,6 +23,7 @@ Route::post('regDentalCamp', [FrontendController::class, 'regDentalCamp']);
 Route::post('saveContactUs', [FrontendController::class, 'saveContactUs']);
 Route::post('findDoctor', [FrontendController::class, 'findDoctor']);
 Route::get('getDoctorInfo', [FrontendController::class, 'getDoctorInfo']);
+Route::get('sendmail', [FrontendController::class, 'sendmail']);
 
 Route::middleware('auth:api')->group( function () {
 

@@ -10,6 +10,8 @@ use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Hash, DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class FrontendController extends Controller
 {   
@@ -181,7 +183,51 @@ class FrontendController extends Controller
         //     $query->where('users.phone_number', 'like', '%' . $request->input('phone_number') . '%');
         // }
         $doctors = $query->get();
-        // dd($doctors);
+        if(count($doctors)>0){
+            foreach ($doctors as $doctor) {
+                $doctor->education = explode(",", $doctor->education);
+            }
+        }
         return response()->json($doctors);
+    }
+
+    public function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    public function sendmail(Request $request){
+        $email = $request->input('email');
+        $user = User::where('email',$email)->first();
+        if(is_null($user)){
+            $response['success'] = false;
+            $response['message'] = "Email does not exist.";
+        }
+        else{
+            $to_name = $user->name;
+            $to_email = $email;
+            $newpass = $this->generateRandomString(8);
+            $user->password = Hash::make($newpass);
+            $user->save();
+
+            $body = "This is a system generated password. Please change it after login. <br> <b>Password:</b> ".$newpass;
+            $data = array('name'=>$to_name, "body" => $body);
+            
+            Mail::send('email.mail', $data, function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                        ->subject('New Passwrd');
+                $message->from('sensetiveexpert@gmail.com','Sensetive expert');
+            });
+            $response['success'] = true;
+            $response['message'] = "A system generated password has been sent to your email address";
+        }
+        
+
+        return $response;
     }
 }   
